@@ -1,9 +1,4 @@
-#include <opencv/cv.h>
-#include <opencv/cvaux.h>
-#include <opencv/highgui.h>
-
-#include <stdlib.h>
-#include "flandmark_detector.h"
+#include "GetLandmarks.h"
 
 double* GetLandmarks(IplImage *orig){
 
