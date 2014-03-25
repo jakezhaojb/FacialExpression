@@ -85,6 +85,8 @@ double* GetLandmarks(IplImage *orig){
 }
 
 
+// for DEBUG
+/*
 int main(int argc, const char *argv[])
 {
   printf("I am testing the Landmarks function~!\n");
@@ -118,3 +120,4 @@ int main(int argc, const char *argv[])
 
   return 0;
 }
+*/
