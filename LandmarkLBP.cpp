@@ -27,6 +27,10 @@ void LandmarkLBP(IplImage* face_src,
   memset(lbp_left_eye, 0, sizeof(float)*scale*cell_num_steps*cell_num_steps*59);
   MultiScaleLBP(face_landmark_patch, lbp_left_eye, scale, cell_num_steps);
   cvReleaseImage(&face_landmark_patch);
+  for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
+    lbp[pos++] = lbp_left_eye[i];
+  }
+  free(lbp_left_eye);
 
 
   //right eye
@@ -41,6 +45,10 @@ void LandmarkLBP(IplImage* face_src,
   memset(lbp_right_eye, 0, sizeof(float)*scale*cell_num_steps*cell_num_steps*59);
   MultiScaleLBP(face_landmark_patch, lbp_right_eye, scale, cell_num_steps);
   cvReleaseImage(&face_landmark_patch);
+  for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
+    lbp[pos++] = lbp_right_eye[i];
+  }
+  free(lbp_right_eye);
 
   // nose
   face_landmark_patch = cvCreateImage(cvSize(int(dist*2), int(dist)), IPL_DEPTH_8U, 1);
@@ -51,6 +59,10 @@ void LandmarkLBP(IplImage* face_src,
   memset(lbp_nose, 0, sizeof(float)*scale*cell_num_steps*cell_num_steps*59);
   MultiScaleLBP(face_landmark_patch, lbp_nose, scale, cell_num_steps);
   cvReleaseImage(&face_landmark_patch);
+  for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
+    lbp[pos++] = lbp_nose[i];
+  }
+  free(lbp_nose);
 
   // mouth
   dist = landmarks[8] - landmarks[6];
@@ -64,39 +76,26 @@ void LandmarkLBP(IplImage* face_src,
   memset(lbp_mouth, 0, sizeof(float)*scale*cell_num_steps*cell_num_steps*59);
   MultiScaleLBP(face_landmark_patch, lbp_mouth, scale, cell_num_steps);
   cvReleaseImage(&face_landmark_patch);
-
-  // release
-  cvReleaseImage(&face_src_gray);
-
-  // assigning to *lbp and release float* pointers
-  for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
-    lbp[pos++] = lbp_left_eye[i];
-  }
-  free(lbp_left_eye);
-
-  for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
-    lbp[pos++] = lbp_right_eye[i];
-  }
-  free(lbp_right_eye);
-
-  for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
-    lbp[pos++] = lbp_nose[i];
-  }
-  free(lbp_nose);
-
   for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
     lbp[pos++] = lbp_mouth[i];
   }
   free(lbp_mouth);
 
-
+  // Why can't release?!
+  //cvNamedWindow("0");
+  //cvShowImage("0", face_src_gray);
+  //cvWaitKey();
+  //cvReleaseImage(&face_src_gray);
+  free(landmarks);
 }
 
-// 需要删除圈脸的方框！需要删除landmarks的圆圈！！！
-// Can't release?!!!! *** glibc detected *** ./test2: corrupted double-linked list: 0x00000000010acb70 ***
 int main(int argc, const char *argv[])
 {
   int i, scale, cell_num_steps;
+  if(argc != 3){
+    printf("Wrong input cmd parameters!");
+    exit(1);
+  }
   scale = atoi(argv[1]);
   cell_num_steps = atoi(argv[2]);
   //printf("%d, %d\n", scale, cell_num_steps);
@@ -111,7 +110,11 @@ int main(int argc, const char *argv[])
     if((i+1)%59 == 0)
       printf("\n");
   }
-  printf("The total dimension of features: %d", i);
+  printf("The total dimension of features: %d\n", i);
+
+  // Why can't release?!
+  //free(lbp);
+  //cvReleaseImage(&src);
   
   return 0;
 }
