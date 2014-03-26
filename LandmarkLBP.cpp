@@ -81,12 +81,9 @@ void LandmarkLBP(IplImage* face_src,
   }
   free(lbp_mouth);
 
-  // Why can't release?!
-  //cvNamedWindow("0");
-  //cvShowImage("0", face_src_gray);
-  //cvWaitKey();
-  //cvReleaseImage(&face_src_gray);
   free(landmarks);
+  // Why can't release?!
+  //cvReleaseImage(&face_src_gray);
 }
 
 int main(int argc, const char *argv[])
