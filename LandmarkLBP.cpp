@@ -105,7 +105,6 @@ int main(int argc, const char *argv[])
   float* lbp = (float*)malloc(scale*cell_num_steps*cell_num_steps*4*59);
   memset(lbp, 0, scale*cell_num_steps*cell_num_steps*4*59);
   LandmarkLBP(src, lbp, scale, cell_num_steps);
-  printf("ok\n");
 
   for (i = 0; i < scale*cell_num_steps*cell_num_steps*4*59; i++) {
     printf("%4f ", lbp[i]);
