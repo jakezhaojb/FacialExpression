@@ -1,7 +1,6 @@
 FacialExpression
 ======================
->**Designer:** Junbo Zhao, Wuhan University, Working in Tsinghua National lab of intelligent images and documents processing.   
-**Email:** zhaojunbo1992chasing@gmail.com     +86-18672365683 <\br>
+>**Designer:** Junbo Zhao, [homepage](https://zhaojunbo.github.io)
 
 Introduction
 -----
