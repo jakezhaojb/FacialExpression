@@ -1,10 +1,7 @@
 #include "GetLandmarks.h"
 #include "ExtractLBP.h"
 
-void LandmarkLBP(IplImage* face_src, 
-                 float* lbp,
-                 int scale,
-                 int cell_num_steps){
+void LandmarkLBP(IplImage* face_src, float* lbp, int scale, int cell_num_steps){
 
   double* landmarks = GetLandmarks(face_src);
   int i, j, pos=0;
@@ -30,7 +27,7 @@ void LandmarkLBP(IplImage* face_src,
   for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
     lbp[pos++] = lbp_left_eye[i];
   }
-  free(lbp_left_eye);
+  free(lbp_left_eye);  // release
 
 
   //right eye
@@ -48,7 +45,7 @@ void LandmarkLBP(IplImage* face_src,
   for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
     lbp[pos++] = lbp_right_eye[i];
   }
-  free(lbp_right_eye);
+  free(lbp_right_eye);  // release
 
   // nose
   face_landmark_patch = cvCreateImage(cvSize(int(dist*2), int(dist)), IPL_DEPTH_8U, 1);
@@ -62,7 +59,7 @@ void LandmarkLBP(IplImage* face_src,
   for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
     lbp[pos++] = lbp_nose[i];
   }
-  free(lbp_nose);
+  free(lbp_nose);  // release
 
   // mouth
   dist = landmarks[8] - landmarks[6];
@@ -79,27 +76,28 @@ void LandmarkLBP(IplImage* face_src,
   for (i = 0; i < scale*cell_num_steps*cell_num_steps*59; i++) {
     lbp[pos++] = lbp_mouth[i];
   }
-  free(lbp_mouth);
+  free(lbp_mouth);  // release
 
+  // release
   free(landmarks);
-  // Why can't release?!
-  //cvReleaseImage(&face_src_gray);
+  cvReleaseImage(&face_src_gray);
 }
 
 int main(int argc, const char *argv[])
 {
   int i, scale, cell_num_steps;
   if(argc != 3){
-    printf("Wrong input cmd parameters!");
+    printf("Wrong input parameters!");
     exit(1);
   }
   scale = atoi(argv[1]);
   cell_num_steps = atoi(argv[2]);
-  //printf("%d, %d\n", scale, cell_num_steps);
-  //exit(1);
-  IplImage* src = cvLoadImage("face1.png");
-  float* lbp = (float*)malloc(scale*cell_num_steps*cell_num_steps*4*59);
-  memset(lbp, 0, scale*cell_num_steps*cell_num_steps*4*59);
+  IplImage* src = cvLoadImage("src/face1.png");
+  float* lbp;
+  lbp = (float*)malloc(sizeof(float)*scale*cell_num_steps*cell_num_steps*4*59);
+  memset(lbp, 0, sizeof(float)*scale*cell_num_steps*cell_num_steps*4*59);
+  
+  // Extracts LBP over landmarks!
   LandmarkLBP(src, lbp, scale, cell_num_steps);
 
   for (i = 0; i < scale*cell_num_steps*cell_num_steps*4*59; i++) {
@@ -109,9 +107,9 @@ int main(int argc, const char *argv[])
   }
   printf("The total dimension of features: %d\n", i);
 
-  // Why can't release?!
-  //free(lbp);
-  //cvReleaseImage(&src);
+  // release
+  free(lbp);
+  cvReleaseImage(&src);
   
   return 0;
 }

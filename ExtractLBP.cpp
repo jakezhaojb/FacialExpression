@@ -179,7 +179,7 @@ void MultiScaleLBP(const IplImage* src, float* lbp, int scale, int cell_num_step
 int main(int argc, const char *argv[])
 {
   
-	IplImage* face = cvLoadImage("..//face1.png",CV_LOAD_IMAGE_ANYDEPTH | CV_LOAD_IMAGE_ANYCOLOR);
+	IplImage* face = cvLoadImage("src/face1.png",CV_LOAD_IMAGE_ANYDEPTH | CV_LOAD_IMAGE_ANYCOLOR);
 	IplImage* Gray_face = cvCreateImage( cvSize( face->width,face->height ), face->depth, 1);
   cvCvtColor(face, Gray_face ,CV_BGR2GRAY);
 
