@@ -8,7 +8,7 @@ Introduction
 
 Framework
 -----
-  My code is mainly comprised of three parts: 
+  My code is mainly comprised of three parts:      
     1. Find the positions of facial landmarks, including eyes, nose and mouth.    
     2. Extract LBP features over landmarks in a multi-scale and multi-cell manner. We normally ignore information from other parts of faces except the landmarks and their surroundings, since other parts would not bring us a discriminative classifier.      
     3. Calculate the difference between the face of a special expression and the neutral courterpart. Consequently the difference, namely a long vector, is that expression's feature.    
